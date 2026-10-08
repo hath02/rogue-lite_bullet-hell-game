@@ -3,3 +3,6 @@
 
 # Game assets
 assets/
+
+__pycache__/
+*.pyc
