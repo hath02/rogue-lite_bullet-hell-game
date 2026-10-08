@@ -1,0 +1,39 @@
+ART:
+    //====== PROTOTYPE =====//
+        art_type: pixle
+        size: 64x64
+        tools: LibreSprite
+
+    //===== FINAL PRODUCT =====//
+        tools: Kirta
+        redraw entire art assets.
+        change maps design.
+        add more spells, playable characters.
+
+UI:
+    create background for all UI.
+    create button, inventory, shop.
+    player info display.
+    no dmg display -> reduce lag.
+
+AUDIO:
+    NancyGold_sfx/electricity01
+    NancyGold_sfx/foley-whoosh02
+    NancyGold_sfx/magic39-impact
+    NancyGold_sfx/magic48-flame_extinguish
+
+    ChequeredInk_sounds/Environment/ambient_wind
+
+    look for some gothic, rock music.
+
+MAIN FEATURES:
+    player level up, choose 1 of 3 upgrades.
+    each upgrade/add new spells for player to cast.
+    spells will gain new effects at level 3/5/8.
+    some maps have unique mechanics that affect gameplay.
+
+    update map generator to fit story, challenges, endless modes.
+
+CORE:
+    change language to C# and move to Unity.
+    Windows, Linux support (maybe even Android).
