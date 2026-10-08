@@ -7,6 +7,7 @@ from settings import FPS, PROJECTILE_SIZE
 from UI.screen.__init__ import *
 from UI.font import *
 import UI.font as fonts
+from UI.screen.levelup import LevelUp
 
 # WORLD
 from World.world import World
@@ -76,6 +77,11 @@ class Game:
             self.screen_height
         )
 
+        self.levelup = LevelUp(
+            self.screen_width, 
+            self.screen_height
+        )
+        
         # Game objects
         self.world = None
         self.player = Player()
@@ -125,6 +131,16 @@ class Game:
         )
         
         self.player = Player()
+                
+        self.spellbook = self.player.spellbook
+        self.upgrade_system = UpgradeSystem(self.spellbook)
+        self.level_up_system = LevelUpSystem(
+            self.player, 
+            self.spellbook, 
+            self.upgrade_system
+        )
+        
+        
         self.enemies = []
         self.spawner = Spawner()
         self.elapsed_time = 0.0
@@ -177,6 +193,11 @@ class Game:
                 
                 self.gameover.resize(
                     self.screen_width,
+                    self.screen_height
+                )
+                
+                self.levelup.resize(
+                    self.screen_width, 
                     self.screen_height
                 )
                 
@@ -253,7 +274,22 @@ class Game:
                     
                 elif result == "quit":
                     self.game_state = "menu"
-                    
+            
+            
+            # Level up
+            elif self.game_state == "levelup":
+                index = self.levelup.handle_event(
+                    event,
+                    self.level_up_system.pending_choices
+                )
+
+                if index is not None:
+                    choice = self.level_up_system.pending_choices[index]
+                    self.level_up_system.apply_choice(choice)
+
+                    if not self.level_up_system.awaiting_choice:
+                        self.game_state = "game"
+                                
             # Gameover
             elif self.game_state == "gameover":
                 result = self.gameover.handle_event(event)
@@ -295,12 +331,7 @@ class Game:
                 dt,
                 self.enemies
             )
-            
-            # Update spells
-            self.player.spell_controller.update(
-                dt,
-                self.enemies
-            )
+    
             
             # Update enemies 
             for enemy in self.enemies:
@@ -340,6 +371,12 @@ class Game:
                         
             self.enemies = alive_enemy
             
+            if (
+                self.level_up_system.awaiting_choice
+                and self.game_state == "game"
+            ):
+                self.game_state = "levelup"
+            
           
     # Draw game objects
     def draw(self):
@@ -360,7 +397,7 @@ class Game:
             )
             
         # Game
-        elif self.game_state in ("game", "pause", "gameover"):
+        elif self.game_state in ("game", "pause", "gameover", "levelup"):
             self.screen.fill((0, 0, 0))  # Clear the screen with black
             
             # Draw the world
@@ -404,6 +441,13 @@ class Game:
             # Gameover overlay    
             if self.game_state == "gameover":
                 self.gameover.draw(self.screen)
+                
+            # Level up overlay
+            if self.game_state == "levelup":
+                self.levelup.draw(
+                    self.screen,
+                    self.level_up_system.pending_choices
+                )
             
         pygame.display.flip()  # Update the display
         

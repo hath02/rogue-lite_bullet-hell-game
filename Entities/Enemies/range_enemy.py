@@ -1,6 +1,7 @@
 import pygame
 
 from Entities.Enemies.enemy import RangeEnemy, EnemyProjectile, tint_image
+from assets import load_frames
 from settings import ENEMY_SIZE, PROJECTILE_SIZE
 
 class Range(RangeEnemy):
@@ -10,7 +11,7 @@ class Range(RangeEnemy):
         # Change stats
         self.max_hp = 20
         self.hp = self.max_hp
-        self.damage = 20
+        self.damage = 10
         
         self.exp_reward = 4
         
@@ -18,45 +19,17 @@ class Range(RangeEnemy):
         self.projectiles = []
                 
         # Idle animation frames
-        self.idle_frames = [
-            pygame.transform.scale(
-                pygame.image.load(
-                    "assets/Enemy/range_enemy/idle_range1.png"
-                ).convert_alpha(),
-                (ENEMY_SIZE, ENEMY_SIZE)
-            ),
-            
-            pygame.transform.scale(
-                pygame.image.load(
-                    "assets/Enemy/range_enemy/idle_range2.png"
-                ).convert_alpha(),
-                (ENEMY_SIZE, ENEMY_SIZE)
-            )
-        ]        
-        
-        # Attack animation frames
-        self.attack_frames = [
-            pygame.transform.scale(
-                pygame.image.load(
-                    "assets/Enemy/range_enemy/attack_range1.png"
-                ).convert_alpha(),
-                (ENEMY_SIZE, ENEMY_SIZE)
-            ),
-            
-            pygame.transform.scale(
-                pygame.image.load(
-                    "assets/Enemy/range_enemy/attack_range2.png"
-                ).convert_alpha(),
-                (ENEMY_SIZE, ENEMY_SIZE)
-            ),
-            
-            pygame.transform.scale(
-                pygame.image.load(
-                    "assets/Enemy/range_enemy/attack_range3.png"
-                ).convert_alpha(),
-                (ENEMY_SIZE, ENEMY_SIZE)
-            )
-        ]   
+        size = (ENEMY_SIZE, ENEMY_SIZE)
+
+        self.idle_frames = load_frames(
+            [f"assets/Enemy/range_enemy/idle_range{i}.png" for i in (1, 2)],
+            size
+        )
+
+        self.attack_frames = load_frames(
+            [f"assets/Enemy/range_enemy/attack_range{i}.png" for i in (1, 2, 3)],
+            size
+        )  
         
         # Current animation
         self.current_animation = self.idle_frames

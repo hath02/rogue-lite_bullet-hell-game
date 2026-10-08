@@ -79,11 +79,18 @@ class Player:
         # Damage flash
         self.damage_flash = 0
         self.damage_flash_duration = 0.15
+        
+        self.invuln_timer = 0
+        self.invuln_duration = 0.5
                 
     def take_damage(self, damage):
+        if self.invuln_timer > 0 or not self.alive:
+            return
+
         self.stats.hp -= damage
         self.damage_flash = self.damage_flash_duration
-        
+        self.invuln_timer = self.invuln_duration
+
         if self.stats.hp <= 0:
             self.stats.hp = 0
             self.die()
@@ -119,6 +126,9 @@ class Player:
         # Damage flash
         if self.damage_flash > 0:
             self.damage_flash -= dt
+        
+        if self.invuln_timer > 0:
+            self.invuln_timer -= dt
 
     def move(self, dt):
         direction = pygame.Vector2(0, 0)

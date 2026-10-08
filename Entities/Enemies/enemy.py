@@ -2,6 +2,7 @@ import pygame
 
 from settings import ENEMY_SIZE, PROJECTILE_SIZE
 from Systems.Behaviors import ProjectileBehavior
+from assets import load_image
 from SpellSystem.effects import *
 
 # Tinted image for take damage
@@ -17,7 +18,7 @@ class Enemy:
         self.max_hp = 30
         self.hp = self.max_hp
         
-        self.damage = 25
+        self.damage = 15
         self.base_speed = 50
         self.speed = self.base_speed
         
@@ -108,6 +109,8 @@ class Enemy:
             effect.draw(screen, camera)
         
 class ContactEnemy(Enemy):
+    deals_contact_damage = True
+    
     def update(self, dt, player):
         direction = player.position - self.position
         distance = direction.length()
@@ -216,13 +219,12 @@ class EnemyProjectile(ProjectileBehavior):
         
         self.hitbox_radius = PROJECTILE_SIZE / 2
         
-        self.image = pygame.transform.scale(
-            pygame.image.load(
-                "assets/Enemy/enemy_projectile.png"
-            ).convert_alpha(),
+        self.image = load_image(
+            "assets/Enemy/enemy_projectile.png",
             (PROJECTILE_SIZE, PROJECTILE_SIZE)
-        )
-            
+        )  
+        
+        
     def draw(self, screen, camera):
         if not self.alive:
             return

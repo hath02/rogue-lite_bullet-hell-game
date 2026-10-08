@@ -33,6 +33,9 @@ class CollisionSystem:
             enemies
         )
         
+        self.check_enemy_contact(player, enemies)
+        
+        
     def update_hit_timers(self, spell, dt):
 
         if not hasattr(spell, "hit_timers"):
@@ -76,7 +79,8 @@ class CollisionSystem:
 
             if not spell.alive:
                 break
-
+            
+            
     def check_enemy_projectiles(
         self,
         player,
@@ -113,7 +117,21 @@ class CollisionSystem:
                     )
 
                     projectile.destroy()
-                    
+    
+    
+    def check_enemy_contact(self, player, enemies):
+        for enemy in enemies:
+            if not enemy.alive:
+                continue
+            if not getattr(enemy, "deals_contact_damage", False):
+                continue
+
+            distance = enemy.position.distance_to(player.position)
+
+            if distance <= enemy.hitbox_radius + player.hitbox_radius:
+                player.take_damage(enemy.damage)         
+                
+                       
 class CollisionHandler:
     def check(self, source, target):
         pass

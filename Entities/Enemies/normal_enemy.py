@@ -1,6 +1,7 @@
 import pygame
 
 from Entities.Enemies.enemy import ContactEnemy, tint_image
+from assets import load_frames
 from settings import ENEMY_SIZE
 
 class Normal(ContactEnemy):
@@ -12,21 +13,10 @@ class Normal(ContactEnemy):
         self.speed = self.base_speed
         
         # Animation frame
-        self.frames = [
-            pygame.transform.scale(
-                pygame.image.load(
-                    "assets/Enemy/normal_enemy/normal_enemy1.png"
-                ).convert_alpha(),
-                (ENEMY_SIZE, ENEMY_SIZE)
-            ),
-                        
-            pygame.transform.scale(
-                pygame.image.load(
-                    "assets/Enemy/normal_enemy/normal_enemy2.png"
-                ).convert_alpha(),
-                (ENEMY_SIZE, ENEMY_SIZE)
-            )
-        ]
+        self.frames = load_frames(
+            [f"assets/Enemy/normal_enemy/normal_enemy{i}.png" for i in (1, 2)],
+            (ENEMY_SIZE, ENEMY_SIZE)
+        )
         
         # Animation stats
         self.animation_frame = 0

@@ -23,7 +23,7 @@ class Bullet(Spell):
         
         # Stats
         self.stats.damage = 10
-        self.stats.cooldown = 2.5
+        self.stats.cooldown = 1.5
         self.stats.speed = 500
         self.stats.lifetime = 4.0
         self.stats.pierce = 0

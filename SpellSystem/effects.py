@@ -1,4 +1,5 @@
 import pygame
+from assets import load_frames
 
 def tint_image(image, color):
     tinted = image.copy()
@@ -30,25 +31,11 @@ class Burn(Effect):
         self.timer = 0.0
         
         # Animation
-        self.frames = [
-            pygame.image.load(
-                "assets/Effects/burn/burn1.png"
-            ).convert_alpha(),
-            
-            pygame.image.load(
-                "assets/Effects/burn/burn2.png"
-            ).convert_alpha()            
-        ]
-        
-        # Scale burn to enemy size
-        self.frames = [
-            pygame.transform.scale(
-                frame,
-                (int(size), int(size))
-            )
-            for frame in self.frames
-        ]
-                
+        self.frames = load_frames(
+            [f"assets/Effects/burn/burn{i}.png" for i in (1, 2)],
+            (int(size), int(size))
+        )
+                        
         self.animation_frame = 0
         self.animation_timer = 0.0
         self.animation_speed = 0.1
